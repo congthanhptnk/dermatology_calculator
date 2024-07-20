@@ -1,9 +1,17 @@
+import 'dart:convert';
+
 import 'package:dermatology_calculator/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:http/http.dart' as http;
+import 'package:logger/web.dart';
 
 void main() {
+  usePathUrlStrategy();
   runApp(const MyApp());
 }
+
+var logger = Logger();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -56,6 +64,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<String> existingFeatures = ['R1T', 'R1D', 'R2T', 'R2D', 'R6T', 'R6D'];
+  final List<String> selectedFeatures = [];
+
+  List<String>? requiredFeatures;
+  String? formula;
+
+  final ValueNotifier<String> gender = ValueNotifier('female');
+  final ValueNotifier<String> yName = ValueNotifier('R345D');
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -72,35 +88,207 @@ class _MyHomePageState extends State<MyHomePage> {
           alignment: Alignment.center,
           child: ListView(
             children: [
-              _buildSections(title: 'Gender', body: Text('hello world')),
+              _buildSections(
+                title: 'Teeth',
+                body: SizedBox(
+                  height: 500,
+                  width: 500,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: existingFeatures.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      bool selected = selectedFeatures.contains(existingFeatures[index]);
+                      return ListTile(
+                        selectedColor: Colors.red,
+                        title: Text(existingFeatures[index]),
+                        selected: selected,
+                        onTap: () {
+                          if (selected) {
+                            setState(() {
+                              selectedFeatures.remove(existingFeatures[index]);
+                            });
+                          } else {
+                            setState(() {
+                              selectedFeatures.add(existingFeatures[index]);
+                            });
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
               SizedBox(height: 16),
               _buildSections(
                 title: 'Gender',
                 body: SizedBox(
                   width: 200,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Bro'),
-                      TextField(
-                        decoration: getInput(),
-                      ),
-                    ],
-                  ),
+                  child: ValueListenableBuilder(
+                      valueListenable: gender,
+                      builder: (context, gen, child) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            RadioListTile<String>(
+                              title: const Text('Female'),
+                              value: 'female',
+                              groupValue: gen,
+                              onChanged: (String? value) {
+                                if (value == null) {
+                                  return;
+                                }
+                                gender.value = value;
+                              },
+                            ),
+                            RadioListTile<String>(
+                              title: const Text('Male'),
+                              value: 'male',
+                              groupValue: gen,
+                              onChanged: (String? value) {
+                                if (value == null) {
+                                  return;
+                                }
+                                gender.value = value;
+                              },
+                            ),
+                          ],
+                        );
+                      }),
                 ),
               ),
               SizedBox(height: 16),
-              _buildSections(title: 'Gender', body: Text('hello world')),
+              _buildSections(
+                title: 'Y Name',
+                body: SizedBox(
+                  width: 200,
+                  child: ValueListenableBuilder(
+                      valueListenable: yName,
+                      builder: (context, name, child) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            RadioListTile<String>(
+                              title: const Text('R345T'),
+                              value: 'R345T',
+                              groupValue: name,
+                              onChanged: (String? value) {
+                                if (value == null) {
+                                  return;
+                                }
+                                yName.value = value;
+                              },
+                            ),
+                            RadioListTile<String>(
+                              title: const Text('R345D'),
+                              value: 'R345D',
+                              groupValue: name,
+                              onChanged: (String? value) {
+                                if (value == null) {
+                                  return;
+                                }
+                                yName.value = value;
+                              },
+                            ),
+                          ],
+                        );
+                      }),
+                ),
+              ),
               SizedBox(height: 16),
-              _buildSections(title: 'Gender', body: Text('hello world')),
+              TextButton(
+                onPressed: () async {
+                  if (selectedFeatures.isEmpty) {
+                    return;
+                  }
+                  try {
+                    Uri uri = Uri.parse('https://thanhthaoml.pythonanywhere.com/ml');
+                    String requestBody = jsonEncode({
+                      'gender': gender.value,
+                      'yName': yName.value,
+                      'features': selectedFeatures,
+                    });
+                    http.Response data =
+                        await http.post(uri, body: requestBody, headers: {'content-type': 'application/json'});
+
+                    dynamic decodedData = jsonDecode(data.body)['content'];
+                    String? retFormula = decodedData['formula'];
+                    List<String>? retFeatures = List.generate(
+                        decodedData['features'].length, (index) => decodedData['features'][index].toString());
+
+                    setState(() {
+                      formula = retFormula;
+                      requiredFeatures = retFeatures;
+                    });
+                  } catch (err, stack) {
+                    logger.e('HALLO', error: err, stackTrace: stack);
+                  }
+                },
+                child: Text('hello world'),
+              ),
               SizedBox(height: 16),
-              _buildSections(title: 'Gender', body: Text('hello world')),
+              if (formula != null) Text(formula!),
+              if (requiredFeatures != null) ...[
+                for (String feature in requiredFeatures!) ...[
+                  Text(feature),
+                  TextField(
+                    onChanged: (String? value) {
+                      if (value != null && value.isNotEmpty && double.tryParse(value) != null) {
+                        setState(() {
+                          featuresValues[feature] = double.tryParse(value)!;
+                        });
+                      }
+                    },
+                  )
+                ]
+              ],
               SizedBox(height: 16),
+              if (formula != null)
+                TextButton(
+                  onPressed: () async {
+                    if (formula?.isEmpty ?? true) {
+                      return;
+                    }
+                    setState(() {
+                      finalRes = evaluateFormula(formula!, featuresValues);
+                    });
+                  },
+                  child: Text('Calculate'),
+                ),
+              if (finalRes != 0) Text(finalRes.toString()),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Map<String, double> featuresValues = {};
+  double finalRes = 0;
+
+  double evaluateFormula(String formula, Map<String, double> variables) {
+    // Replace variables in the formula string
+    variables.forEach((key, value) {
+      formula = formula.replaceAll(key, value.toString());
+    });
+
+    // Split the formula into terms and evaluate each term
+    List<String> terms = formula.split(RegExp(r'\s*\+\s*'));
+    double result = 0.0;
+
+    for (var term in terms) {
+      if (term.contains('*')) {
+        List<String> factors = term.split('*');
+        double termResult = 1.0;
+        for (var factor in factors) {
+          termResult *= double.parse(factor);
+        }
+        result += termResult;
+      } else {
+        result += double.parse(term);
+      }
+    }
+
+    return result;
   }
 
   Widget _buildSections({required String title, required Widget body}) {
