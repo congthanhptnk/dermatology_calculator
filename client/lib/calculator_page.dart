@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dermatology_calculator/custom_calculator_page.dart';
 import 'package:dermatology_calculator/error_panel.dart';
 import 'package:dermatology_calculator/input_field.dart';
 import 'package:dermatology_calculator/main.dart';
@@ -57,7 +58,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
           preferredSize: const Size(double.infinity, 60),
           child: AppBar(
             title: Text(
-              'Dermatology Machine Learning Demo',
+              'Dental Machine Learning Demo',
               style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
             ),
             backgroundColor: BlueLightColor.s700,
@@ -394,7 +395,25 @@ class _CalculatorPageState extends State<CalculatorPage> {
             'Reset',
             style: Theme.of(context).textTheme.titleLarge,
           ),
-        )
+        ),
+        const Gap(16),
+        FilledButton(
+          style: const ButtonStyle(
+            fixedSize: WidgetStatePropertyAll<Size?>(Size(400, 60)),
+            backgroundColor: WidgetStatePropertyAll<Color?>(ErrorColor.s900),
+          ),
+          onPressed: isLoading
+              ? null
+              : () async {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return CustomCalculatorPage();
+                  }));
+                },
+          child: Text(
+            "I don't have these measurements",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+          ),
+        ),
       ],
     );
   }
