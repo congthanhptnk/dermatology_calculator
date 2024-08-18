@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dental_calculator/custom_calculator_page.dart';
 import 'package:dental_calculator/error_panel.dart';
 import 'package:dental_calculator/footer.dart';
+import 'package:dental_calculator/language_toggle.dart';
 import 'package:dental_calculator/main.dart';
 import 'package:dental_calculator/panel_group.dart';
 import 'package:dental_calculator/patient_info_radio.dart';
@@ -10,9 +11,11 @@ import 'package:dental_calculator/result_panel.dart';
 import 'package:dental_calculator/simple_panel.dart';
 import 'package:dental_calculator/teeth_inputs_form.dart';
 import 'package:dental_calculator/theme.dart';
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
+import 'package:i18n_extension/i18n_extension.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CalculatorPage extends StatefulWidget {
@@ -73,7 +76,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
           preferredSize: const Size(double.infinity, 60),
           child: AppBar(
             title: Text(
-              'Dental Machine Learning Demo',
+              'Dental Machine Learning Demo'.i18n,
               style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
             ),
             backgroundColor: BlueLightColor.s700,
@@ -82,19 +85,26 @@ class _CalculatorPageState extends State<CalculatorPage> {
             actions: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: FilledButton(
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                      return const CustomCalculatorPage();
-                    }));
-                  },
-                  child: Text(
-                    'View custom calculator',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const LanguageToggle(),
+                    const Gap(24),
+                    FilledButton(
+                      style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                          return const CustomCalculatorPage();
+                        }));
+                      },
+                      child: Text(
+                        'View custom calculator'.i18n,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -118,14 +128,14 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       PanelGroup(
-                        title: 'Select gender and Y',
+                        title: 'Select gender and Y'.i18n,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Expanded(
                               flex: 1,
                               child: SimplePanel(
-                                title: 'Gender',
+                                title: 'Gender'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildGender(context),
                               ),
@@ -134,7 +144,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                             Expanded(
                               flex: 1,
                               child: SimplePanel(
-                                title: 'Y Name',
+                                title: 'Y Name'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildYName(context),
                               ),
@@ -151,11 +161,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
                       const Gap(24),
                       if (requiredFeatures?.isNotEmpty ?? false)
                         PanelGroup(
-                          title: 'Below measurements are required for the best predictions',
+                          title: 'Below measurements are required for the best predictions'.i18n,
                           description:
-                              "If you are unable to provide these, click 'I DON'T HAVE THESE MEASUREMENTS' button to evaluate based on other measurements",
+                              "If you are unable to provide these, click 'I DON'T HAVE THESE MEASUREMENTS' button to evaluate based on other measurements"
+                                  .i18n,
                           child: SimplePanel(
-                            title: 'Teeth Measurements',
+                            title: 'Teeth Measurements'.i18n,
                             child: _buildTeethSelector(context),
                           ),
                         ),
@@ -217,7 +228,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
               getFormula();
             },
       child: Text(
-        'Evaluate',
+        'Evaluate'.i18n,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
       ),
     );
@@ -250,7 +261,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   calculateFinalRes();
                 },
           child: Text(
-            'Calculate',
+            'Calculate'.i18n,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
         ),
@@ -262,7 +273,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
             fixedSize: const Size(200, 60),
           ),
           child: Text(
-            'Reset',
+            'Reset'.i18n,
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
@@ -276,11 +287,11 @@ class _CalculatorPageState extends State<CalculatorPage> {
               ? null
               : () async {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                    return CustomCalculatorPage();
+                    return I18n(child: const CustomCalculatorPage());
                   }));
                 },
           child: Text(
-            "I don't have these measurements",
+            "I don't have these measurements".i18n,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
         ),
@@ -355,7 +366,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
     if (formula == null || featuresValues.isEmpty) {
       setState(() {
-        error = 'Something went wrong. Click Reset Button to try again';
+        error = 'Something went wrong. Click Reset Button to try again'.i18n;
       });
     }
 

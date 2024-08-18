@@ -1,3 +1,4 @@
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
 
 class PatientInfoRadio extends StatelessWidget {
@@ -19,7 +20,7 @@ class PatientInfoRadio extends StatelessWidget {
                 String firstCharacter = value.substring(0, 1);
                 String newName = '${firstCharacter.toUpperCase()}${value.substring(1)}';
                 return RadioListTile<String>(
-                  title: Text(newName),
+                  title: Text(newName.i18n),
                   value: value,
                   groupValue: name,
                   onChanged: (String? value) {

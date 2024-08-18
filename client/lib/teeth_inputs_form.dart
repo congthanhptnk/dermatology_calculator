@@ -1,4 +1,5 @@
 import 'package:dental_calculator/input_field.dart';
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
 
 class TeethInputsForm extends StatelessWidget {
@@ -30,11 +31,11 @@ class TeethInputsForm extends StatelessWidget {
             label: feature,
             validator: (String? value) {
               if (value?.isEmpty ?? true) {
-                return 'Required';
+                return 'Required'.i18n;
               }
 
               if (double.tryParse(value!) == null) {
-                return 'Please fill in a valid value';
+                return 'Please fill in a valid value'.i18n;
               }
 
               return null;

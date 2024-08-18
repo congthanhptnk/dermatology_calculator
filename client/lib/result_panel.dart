@@ -1,4 +1,5 @@
 import 'package:dental_calculator/theme.dart';
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
@@ -28,14 +29,14 @@ class ResultPanel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Result',
+                  'Result'.i18n,
                   style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
                 ),
                 const Gap(16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: SelectableText(
-                    'Formula: $formula',
+                    'Formula'.i18n + ': $formula',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                   ),
                 ),
@@ -58,7 +59,7 @@ class ResultPanel extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'Result copied to your clipboard',
+                  'Result copied to your clipboard'.i18n,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
                 ),
                 backgroundColor: SuccessColor.s800,

@@ -1,7 +1,10 @@
 import 'package:dental_calculator/calculator_page.dart';
 import 'package:dental_calculator/theme.dart';
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:i18n_extension/i18n_extension.dart';
 import 'package:logger/web.dart';
 
 void main() {
@@ -38,7 +41,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: BlueLightColor.s700),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Optimal Calculator'),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', "US"),
+        Locale('vi', "VN"),
+      ],
+      home: I18n(initialLocale: const Locale('vi', "VN"), child: MyHomePage(title: 'Optimal Calculator'.i18n)),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:dental_calculator/theme.dart';
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
@@ -168,7 +169,7 @@ class _InputFieldState extends State<InputField> {
 
   InputDecoration getInputDecoration(BuildContext context) {
     return InputDecoration(
-      hintText: 'Enter ${widget.label ?? (widget.placeHolder ?? '')}',
+      hintText: 'Enter'.i18n,
       hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: GrayLightColor.s300),
       alignLabelWithHint: true,
       isDense: widget.isDense,

@@ -1,5 +1,6 @@
 import 'package:dental_calculator/simple_panel.dart';
 import 'package:dental_calculator/theme.dart';
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -33,7 +34,7 @@ class TeethSelector extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                'Please toggle on the values that you have. Require at least 2',
+                'Please toggle on the values that you have. Require at least 2'.i18n,
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: GrayLightColor.s400),
               ),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dental_calculator/error_panel.dart';
 import 'package:dental_calculator/footer.dart';
+import 'package:dental_calculator/language_toggle.dart';
 import 'package:dental_calculator/main.dart';
 import 'package:dental_calculator/panel_group.dart';
 import 'package:dental_calculator/patient_info_radio.dart';
@@ -10,6 +11,7 @@ import 'package:dental_calculator/simple_panel.dart';
 import 'package:dental_calculator/teeth_inputs_form.dart';
 import 'package:dental_calculator/teeth_selector.dart';
 import 'package:dental_calculator/theme.dart';
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +65,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
           preferredSize: const Size(double.infinity, 60),
           child: AppBar(
             title: Text(
-              'Fully Customized Dental Calculator',
+              'Fully Customized Dental Calculator'.i18n,
               style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
             ),
             backgroundColor: BlueLightColor.s700,
@@ -71,6 +73,8 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
             elevation: 2,
             leading: const SizedBox.shrink(),
             actions: [
+              const LanguageToggle(),
+              const Gap(24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: FilledButton(
@@ -81,7 +85,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    'Optimal Calculator',
+                    'Optimal Calculator'.i18n,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                   ),
                 ),
@@ -107,14 +111,14 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       PanelGroup(
-                        title: 'Select gender and Y',
+                        title: 'Select gender and Y'.i18n,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Expanded(
                               flex: 1,
                               child: SimplePanel(
-                                title: 'Gender',
+                                title: 'Gender'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildGender(context),
                               ),
@@ -123,7 +127,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                             Expanded(
                               flex: 1,
                               child: SimplePanel(
-                                title: 'Y Name',
+                                title: 'Y Name'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildYName(context),
                               ),
@@ -133,7 +137,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                       ),
                       const Gap(24),
                       PanelGroup(
-                        title: 'Select teeth',
+                        title: 'Select teeth'.i18n,
                         child: TeethSelector(
                           existingFeatures: existingFeatures,
                           expanded: true,
@@ -161,11 +165,12 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                       // const Gap(24),
                       if (requiredFeatures?.isNotEmpty ?? false)
                         PanelGroup(
-                          title: 'Below measurements are required for the best predictions',
+                          title: 'Below measurements are required for the best predictions'.i18n,
                           description:
-                              "You only need to provide these measurements. You can click reset button to try again",
+                              "You only need to provide these measurements. You can click reset button to try again"
+                                  .i18n,
                           child: SimplePanel(
-                            title: 'Teeth Measurements',
+                            title: 'Teeth Measurements'.i18n,
                             child: TeethInputsForm(
                               formKey: _formKey,
                               features: requiredFeatures!,
@@ -233,7 +238,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
               getFormula();
             },
       child: Text(
-        'Evaluate',
+        'Evaluate'.i18n,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
       ),
     );
@@ -253,7 +258,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                   calculateFinalRes();
                 },
           child: Text(
-            'Calculate',
+            'Calculate'.i18n,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
         ),
@@ -265,7 +270,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
             fixedSize: const Size(200, 60),
           ),
           child: Text(
-            'Reset',
+            'Reset'.i18n,
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
@@ -340,7 +345,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
 
     if (formula == null || featuresValues.isEmpty) {
       setState(() {
-        error = 'Something went wrong. Click Reset Button to try again';
+        error = 'Something went wrong. Click Reset Button to try again'.i18n;
       });
     }
 

@@ -1,4 +1,5 @@
 import 'package:dental_calculator/theme.dart';
+import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -26,7 +27,7 @@ class ErrorPanel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Error',
+                  'Error'.i18n,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                 ),
                 const Gap(16),
