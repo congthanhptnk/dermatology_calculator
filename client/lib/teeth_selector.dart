@@ -24,49 +24,21 @@ class TeethSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimplePanel(
-      title: 'Hello world',
+      title: 'Teeth',
       child: Column(
         children: [
+          _buildPartialSelector(context),
           Align(
             alignment: Alignment.centerLeft,
-            child: SizedBox(
-              width: 480,
-              child: CheckboxListTile(
-                title: const Text('Calculate with partial measurements'),
-                subtitle: const Text("Click this if you don't have all the measurements above"),
-                value: expanded,
-                onChanged: (bool? value) {
-                  if (value == null) {
-                    return;
-                  }
-
-                  toggleExpanded(value);
-                  // if (value == false) {
-                  //   setState(() {
-                  //     selectedFeatures.clear();
-                  //     selectedFeatures.addAll(existingFeatures);
-                  //   });
-                  // }
-                  // partialData.value = value;
-                },
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                'Please toggle on the values that you have. Require at least 2',
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: GrayLightColor.s400),
               ),
             ),
           ),
-          if (expanded) ...[
-            const Gap(16),
-            _buildPartialSelector(context),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  'Please toggle on the values that you have. Require at least 2',
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: GrayLightColor.s400),
-                ),
-              ),
-            ),
-          ]
         ],
       ),
     );
@@ -85,40 +57,23 @@ class TeethSelector extends StatelessWidget {
                   children: [
                     Checkbox(
                       value: selected,
-                      onChanged: (_) {
-                        toggleOption(feature, selected);
-                        // if (selected) {
-                        //   if (selectedFeatures.length <= 2) {
-                        //     return;
-                        //   }
-                        //   setState(() {
-                        //     selectedFeatures.remove(feature);
-                        //   });
-                        // } else {
-                        //   setState(() {
-                        //     selectedFeatures.add(feature);
-                        //   });
-                        // }
+                      onChanged: (bool? value) {
+                        if (value == null) {
+                          return;
+                        }
+                        toggleOption(feature, value);
                       },
                     ),
-                    Text(feature),
+                    const Gap(4),
+                    Text(
+                      feature,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ],
                 ),
                 selected: selected,
                 onTap: () {
-                  toggleOption(feature, selected);
-                  // if (selected) {
-                  //   if (selectedFeatures.length <= 2) {
-                  //     return;
-                  //   }
-                  //   setState(() {
-                  //     selectedFeatures.remove(feature);
-                  //   });
-                  // } else {
-                  //   setState(() {
-                  //     selectedFeatures.add(feature);
-                  //   });
-                  // }
+                  toggleOption(feature, !selected);
                 },
               );
             }),

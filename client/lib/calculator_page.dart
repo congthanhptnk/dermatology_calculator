@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:dental_calculator/custom_calculator_page.dart';
 import 'package:dental_calculator/error_panel.dart';
+import 'package:dental_calculator/footer.dart';
 import 'package:dental_calculator/main.dart';
 import 'package:dental_calculator/panel_group.dart';
+import 'package:dental_calculator/patient_info_radio.dart';
 import 'package:dental_calculator/result_panel.dart';
 import 'package:dental_calculator/simple_panel.dart';
 import 'package:dental_calculator/teeth_inputs_form.dart';
@@ -77,25 +79,28 @@ class _CalculatorPageState extends State<CalculatorPage> {
             backgroundColor: BlueLightColor.s700,
             scrolledUnderElevation: 2,
             elevation: 2,
-          ),
-        ),
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 32,
-            horizontal: 24,
-          ),
-          color: BlueLightColor.s100,
-          child: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Developed and owned by Tran Ngoc Phuong Thao. All rights reserved',
+            actions: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: FilledButton(
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                      return const CustomCalculatorPage();
+                    }));
+                  },
+                  child: Text(
+                    'View custom calculator',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                  ),
+                ),
               ),
-              Gap(4),
-              Text('For any inquiry, please contact Tran Ngoc Phuong Thao at'),
             ],
           ),
         ),
+        bottomNavigationBar: const Footer(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
           child: Scrollbar(
@@ -190,37 +195,14 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 
   Widget _buildYName(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: yName,
-        builder: (context, name, child) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              RadioListTile<String>(
-                title: const Text('R345T'),
-                value: 'R345T',
-                groupValue: name,
-                onChanged: (String? value) {
-                  if (value == null) {
-                    return;
-                  }
-                  yName.value = value;
-                },
-              ),
-              RadioListTile<String>(
-                title: const Text('R345D'),
-                value: 'R345D',
-                groupValue: name,
-                onChanged: (String? value) {
-                  if (value == null) {
-                    return;
-                  }
-                  yName.value = value;
-                },
-              ),
-            ],
-          );
-        });
+    return PatientInfoRadio(values: const ['R345T', 'R345D'], listenable: yName);
+  }
+
+  Widget _buildGender(BuildContext context) {
+    return PatientInfoRadio(
+      values: const ['male', 'female'],
+      listenable: gender,
+    );
   }
 
   Widget _buildEvaluateBestFeaturesButton() {
@@ -238,41 +220,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
         'Evaluate',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
       ),
-    );
-  }
-
-  Widget _buildGender(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: gender,
-      builder: (context, gen, child) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<String>(
-              title: const Text('Male'),
-              value: 'male',
-              groupValue: gen,
-              onChanged: (String? value) {
-                if (value == null) {
-                  return;
-                }
-                gender.value = value;
-              },
-            ),
-            RadioListTile<String>(
-              title: const Text('Female'),
-              value: 'female',
-              groupValue: gen,
-              onChanged: (String? value) {
-                if (value == null) {
-                  return;
-                }
-                gender.value = value;
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 
