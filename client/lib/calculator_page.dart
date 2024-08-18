@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:dental_calculator/custom_calculator_page.dart';
 import 'package:dental_calculator/error_panel.dart';
-import 'package:dental_calculator/input_field.dart';
 import 'package:dental_calculator/main.dart';
+import 'package:dental_calculator/panel_group.dart';
 import 'package:dental_calculator/result_panel.dart';
 import 'package:dental_calculator/simple_panel.dart';
+import 'package:dental_calculator/teeth_inputs_form.dart';
 import 'package:dental_calculator/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -25,7 +26,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
   final ScrollController scrollController = ScrollController();
 
   final List<String> existingFeatures = ['R1T', 'R1D', 'R2T', 'R2D', 'R6T', 'R6D'];
-  final List<String> selectedFeatures = ['R1T', 'R1D', 'R2T', 'R2D', 'R6T', 'R6D'];
 
   final Map<String, double> featuresValues = {};
   double finalRes = 0;
@@ -35,12 +35,25 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
   final ValueNotifier<String> gender = ValueNotifier('male');
   final ValueNotifier<String> yName = ValueNotifier('R345T');
-  final ValueNotifier<bool> partialData = ValueNotifier(false);
 
   bool isLoading = false;
   String? error;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    gender.addListener(resetValues);
+    yName.addListener(resetValues);
+  }
+
+  void resetValues() {
+    setState(() {
+      featuresValues.clear();
+      requiredFeatures = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,33 +112,48 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: SimplePanel(
-                              title: 'Gender',
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              child: _buildGender(context),
+                      PanelGroup(
+                        title: 'Select gender and Y',
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: SimplePanel(
+                                title: 'Gender',
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                child: _buildGender(context),
+                              ),
                             ),
-                          ),
-                          const Gap(24),
-                          Expanded(
-                            flex: 1,
-                            child: SimplePanel(
-                              title: 'Y Name',
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              child: _buildYName(context),
+                            const Gap(24),
+                            Expanded(
+                              flex: 1,
+                              child: SimplePanel(
+                                title: 'Y Name',
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                child: _buildYName(context),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       const Gap(24),
-                      SimplePanel(
-                        title: 'Teeth Measurements',
-                        child: _buildTeethSelector(context),
-                      ),
+                      if (requiredFeatures?.isEmpty ?? true)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: _buildEvaluateBestFeaturesButton(),
+                        ),
+                      const Gap(24),
+                      if (requiredFeatures?.isNotEmpty ?? false)
+                        PanelGroup(
+                          title: 'Below measurements are required for the best predictions',
+                          description:
+                              "If you are unable to provide these, click 'I DON'T HAVE THESE MEASUREMENTS' button to evaluate based on other measurements",
+                          child: SimplePanel(
+                            title: 'Teeth Measurements',
+                            child: _buildTeethSelector(context),
+                          ),
+                        ),
                       const Gap(24),
                       if (isLoading)
                         Center(
@@ -148,7 +176,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         )
                       ],
                       const Gap(32),
-                      _buildButtons(context),
+                      if (requiredFeatures?.isNotEmpty ?? false) _buildButtons(context),
                       const Gap(16),
                     ],
                   ),
@@ -195,6 +223,24 @@ class _CalculatorPageState extends State<CalculatorPage> {
         });
   }
 
+  Widget _buildEvaluateBestFeaturesButton() {
+    return FilledButton(
+      style: const ButtonStyle(
+        fixedSize: WidgetStatePropertyAll<Size?>(Size(200, 60)),
+        backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
+      ),
+      onPressed: isLoading
+          ? null
+          : () async {
+              getFormula();
+            },
+      child: Text(
+        'Evaluate',
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+      ),
+    );
+  }
+
   Widget _buildGender(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: gender,
@@ -231,138 +277,15 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 
   Widget _buildTeethSelector(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: ValueListenableBuilder(
-        valueListenable: partialData,
-        builder: (context, partial, child) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GridView.builder(
-                itemCount: selectedFeatures.length,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, crossAxisSpacing: 24, mainAxisExtent: 120),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  String feature = selectedFeatures[index];
-                  return InputField(
-                    label: feature,
-                    validator: (String? value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'Required';
-                      }
-
-                      if (double.tryParse(value!) == null) {
-                        return 'Please fill in a valid value';
-                      }
-
-                      return null;
-                    },
-                    onChanged: (String value) {
-                      if (double.tryParse(value) == null) {
-                        return;
-                      }
-
-                      featuresValues[feature] = double.parse(value);
-                    },
-                  );
-                },
-              ),
-              const Gap(8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: SizedBox(
-                  width: 480,
-                  child: CheckboxListTile(
-                    title: const Text('Calculate with partial measurements'),
-                    subtitle: const Text("Click this if you don't have all the measurements above"),
-                    value: partial,
-                    onChanged: (bool? value) {
-                      if (value == null) {
-                        return;
-                      }
-                      if (value == false) {
-                        setState(() {
-                          selectedFeatures.clear();
-                          selectedFeatures.addAll(existingFeatures);
-                        });
-                      }
-                      partialData.value = value;
-                    },
-                  ),
-                ),
-              ),
-              if (partial) ...[
-                const Gap(16),
-                _buildPartialSelector(context),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'Please toggle on the values that you have. Require at least 2',
-                      textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: GrayLightColor.s400),
-                    ),
-                  ),
-                ),
-              ]
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildPartialSelector(BuildContext context) {
-    return Wrap(
-      children: [
-        for (String feature in existingFeatures)
-          SizedBox(
-            width: 150,
-            child: ListTile(
-              title: Row(
-                children: [
-                  Checkbox(
-                    value: selectedFeatures.contains(feature),
-                    onChanged: (selected) {
-                      if (selectedFeatures.contains(feature)) {
-                        if (selectedFeatures.length <= 2) {
-                          return;
-                        }
-                        setState(() {
-                          selectedFeatures.remove(feature);
-                        });
-                      } else {
-                        setState(() {
-                          selectedFeatures.add(feature);
-                        });
-                      }
-                    },
-                  ),
-                  Text(feature),
-                ],
-              ),
-              selected: selectedFeatures.contains(feature),
-              onTap: () {
-                if (selectedFeatures.contains(feature)) {
-                  if (selectedFeatures.length <= 2) {
-                    return;
-                  }
-                  setState(() {
-                    selectedFeatures.remove(feature);
-                  });
-                } else {
-                  setState(() {
-                    selectedFeatures.add(feature);
-                  });
-                }
-              },
-            ),
-          ),
-      ],
+    if (requiredFeatures == null) {
+      return const SizedBox.shrink();
+    }
+    return TeethInputsForm(
+      formKey: _formKey,
+      features: requiredFeatures!,
+      onChanged: (String feature, double value) {
+        featuresValues[feature] = value;
+      },
     );
   }
 
@@ -377,7 +300,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
           onPressed: isLoading
               ? null
               : () async {
-                  calculate();
+                  calculateFinalRes();
                 },
           child: Text(
             'Calculate',
@@ -444,15 +367,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
     return result;
   }
 
-  void calculate() async {
-    _formKey.currentState?.validate();
-    if (selectedFeatures.isEmpty) {
-      return;
-    }
+  void getFormula() async {
     try {
-      if (_formKey.currentState?.validate() != true) {
-        return;
-      }
       setState(() {
         isLoading = true;
         error = null;
@@ -461,7 +377,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
       String requestBody = jsonEncode({
         'gender': gender.value,
         'yName': yName.value,
-        'features': selectedFeatures,
+        'features': existingFeatures,
       });
       http.Response data = await http.post(uri, body: requestBody, headers: {'content-type': 'application/json'});
 
@@ -469,16 +385,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
       String? retFormula = decodedData['formula'];
       List<String>? retFeatures =
           List.generate(decodedData['features'].length, (index) => decodedData['features'][index].toString());
-      double res = 0;
-
-      if (retFormula != null) {
-        res = evaluateFormula(retFormula, featuresValues);
-      }
 
       setState(() {
         formula = retFormula;
         requiredFeatures = retFeatures;
-        finalRes = res;
       });
     } catch (err, stack) {
       logger.e('HALLO', error: err, stackTrace: stack);
@@ -488,5 +398,24 @@ class _CalculatorPageState extends State<CalculatorPage> {
         isLoading = false;
       });
     }
+  }
+
+  void calculateFinalRes() {
+    _formKey.currentState?.validate();
+    if (_formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    if (formula == null || featuresValues.isEmpty) {
+      setState(() {
+        error = 'Something went wrong. Click Reset Button to try again';
+      });
+    }
+
+    final double result = evaluateFormula(formula!, featuresValues);
+
+    setState(() {
+      finalRes = result;
+    });
   }
 }
