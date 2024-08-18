@@ -1,4 +1,4 @@
-# dermatology_calculator
+# dental_calculator
 
 A new Flutter project.
 

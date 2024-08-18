@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:dermatology_calculator/custom_calculator_page.dart';
-import 'package:dermatology_calculator/error_panel.dart';
-import 'package:dermatology_calculator/input_field.dart';
-import 'package:dermatology_calculator/main.dart';
-import 'package:dermatology_calculator/result_panel.dart';
-import 'package:dermatology_calculator/simple_panel.dart';
-import 'package:dermatology_calculator/theme.dart';
+import 'package:dental_calculator/custom_calculator_page.dart';
+import 'package:dental_calculator/error_panel.dart';
+import 'package:dental_calculator/input_field.dart';
+import 'package:dental_calculator/main.dart';
+import 'package:dental_calculator/result_panel.dart';
+import 'package:dental_calculator/simple_panel.dart';
+import 'package:dental_calculator/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
@@ -84,7 +84,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
           child: Scrollbar(
             controller: scrollController,
             thumbVisibility: true,

@@ -1,6 +1,6 @@
 {
-    "name": "dermatology_calculator",
-    "short_name": "dermatology_calculator",
+    "name": "dental_calculator",
+    "short_name": "dental_calculator",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

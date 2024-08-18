@@ -1,5 +1,5 @@
-import 'package:dermatology_calculator/calculator_page.dart';
-import 'package:dermatology_calculator/theme.dart';
+import 'package:dental_calculator/calculator_page.dart';
+import 'package:dental_calculator/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:logger/web.dart';

@@ -1,4 +1,4 @@
-import 'package:dermatology_calculator/theme.dart';
+import 'package:dental_calculator/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
