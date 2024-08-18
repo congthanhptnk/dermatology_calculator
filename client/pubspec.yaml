@@ -44,7 +44,6 @@ dependencies:
   loading_animation_widget: ^1.2.1
   gap: ^3.0.1
   i18n_extension: ^12.0.1
-  country_flags: ^3.0.0
 
 dev_dependencies:
   flutter_test:

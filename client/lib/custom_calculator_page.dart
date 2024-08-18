@@ -74,7 +74,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
             leading: const SizedBox.shrink(),
             actions: [
               const LanguageToggle(),
-              const Gap(24),
+              const Gap(32),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: FilledButton(

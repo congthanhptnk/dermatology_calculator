@@ -89,7 +89,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const LanguageToggle(),
-                    const Gap(24),
+                    const Gap(32),
                     FilledButton(
                       style: const ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),

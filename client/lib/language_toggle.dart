@@ -1,4 +1,4 @@
-import 'package:country_flags/country_flags.dart';
+import 'package:dental_calculator/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:i18n_extension/i18n_extension.dart';
@@ -11,10 +11,9 @@ class LanguageToggle extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CountryFlag.fromLanguageCode(
-          'en',
-          height: 24,
-          width: 40,
+        Text(
+          'EN',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
         ),
         const Gap(8),
         SizedBox(
@@ -24,17 +23,17 @@ class LanguageToggle extends StatelessWidget {
             child: Switch(
               // This bool value toggles the switch.
               value: I18n.localeStr == 'vi_vn',
-              overlayColor: overlayColor,
               trackColor: trackColor,
               thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
                 (Set<WidgetState> states) {
                   return const Icon(
                     Icons.language,
-                    color: Colors.white,
+                    color: BlueLightColor.s700,
                   );
                 },
               ),
-              thumbColor: const WidgetStatePropertyAll<Color>(Colors.white),
+              trackOutlineColor: const WidgetStatePropertyAll<Color>(Colors.transparent),
+              thumbColor: const WidgetStatePropertyAll<Color>(BlueLightColor.s700),
               onChanged: (bool value) {
                 if (!value) {
                   I18n.of(context).locale = const Locale("en", "US");
@@ -46,11 +45,10 @@ class LanguageToggle extends StatelessWidget {
           ),
         ),
         const Gap(8),
-        CountryFlag.fromCountryCode(
-          'VN',
-          height: 24,
-          width: 40,
-        ),
+        Text(
+          'VI',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+        )
       ],
     );
   }
@@ -58,29 +56,10 @@ class LanguageToggle extends StatelessWidget {
   WidgetStateProperty<Color?> get trackColor => WidgetStateProperty.resolveWith<Color?>(
         (Set<WidgetState> states) {
           // Track color when the switch is selected.
-          if (states.contains(WidgetState.selected)) {
-            return Colors.redAccent;
-          }
           // Otherwise return null to set default track color
           // for remaining states such as when the switch is
           // hovered, focused, or disabled.
-          return Colors.amber.shade300;
-        },
-      );
-  WidgetStateProperty<Color?> get overlayColor => WidgetStateProperty.resolveWith<Color?>(
-        (Set<WidgetState> states) {
-          // Material color when switch is selected.
-          if (states.contains(WidgetState.selected)) {
-            return Colors.yellow.withOpacity(0.54);
-          }
-          // Material color when switch is disabled.
-          if (states.contains(WidgetState.disabled)) {
-            return Colors.grey.shade400;
-          }
-          // Otherwise return null to set default material color
-          // for remaining states such as when the switch is
-          // hovered, or focused.
-          return null;
+          return Colors.white;
         },
       );
 }
