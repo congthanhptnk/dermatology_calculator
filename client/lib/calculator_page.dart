@@ -12,6 +12,7 @@ import 'package:dental_calculator/teeth_inputs_form.dart';
 import 'package:dental_calculator/theme.dart';
 import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:i18n_extension/i18n_extension.dart';
@@ -89,9 +90,10 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   children: [
                     const LanguageToggle(),
                     const Gap(32),
-                    FilledButton(
-                      style: const ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
+                    IconButton.outlined(
+                      color: Colors.white,
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.white),
                       ),
                       onPressed: () {
                         Locale x = I18n.of(context).locale;
@@ -99,11 +101,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
                           return I18n(initialLocale: x, child: const CustomCalculatorPage());
                         }));
                       },
-                      child: Text(
-                        'View Alternative Prediction'.i18n,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-                      ),
+                      icon: const Icon(FeatherIcons.bookOpen),
                     ),
+                    const Gap(16),
                   ],
                 ),
               ),
@@ -129,27 +129,30 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     children: [
                       PanelGroup(
                         title: 'Select Gender and Arch'.i18n,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: SimplePanel(
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: 2,
+                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 492,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            mainAxisExtent: 176,
+                          ),
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return SimplePanel(
                                 title: 'Gender'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildGender(context),
-                              ),
-                            ),
-                            const Gap(24),
-                            Expanded(
-                              flex: 1,
-                              child: SimplePanel(
+                              );
+                            } else {
+                              return SimplePanel(
                                 title: 'Arch to predict'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildYName(context),
-                              ),
-                            ),
-                          ],
+                              );
+                            }
+                          },
                         ),
                       ),
                       const Gap(24),
@@ -253,34 +256,41 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 
   Widget _buildButtons(BuildContext context) {
-    return Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FilledButton(
-          style: const ButtonStyle(
-            fixedSize: WidgetStatePropertyAll<Size?>(Size(200, 60)),
-            backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
-          ),
-          onPressed: isLoading
-              ? null
-              : () async {
-                  calculateFinalRes();
-                },
-          child: Text(
-            'Predict'.i18n,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-          ),
-        ),
-        const Gap(16),
-        OutlinedButton(
-          onPressed: widget.onReset,
-          style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: BlueLightColor.s900, width: 3),
-            fixedSize: const Size(200, 60),
-          ),
-          child: Text(
-            'Reset'.i18n,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+        Row(
+          children: [
+            FilledButton(
+              style: const ButtonStyle(
+                fixedSize: WidgetStatePropertyAll<Size?>(Size(200, 60)),
+                backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
+              ),
+              onPressed: isLoading
+                  ? null
+                  : () async {
+                      calculateFinalRes();
+                    },
+              child: Text(
+                'Predict'.i18n,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+              ),
+            ),
+            const Gap(16),
+            OutlinedButton(
+              onPressed: widget.onReset,
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: BlueLightColor.s900, width: 3),
+                fixedSize: const Size(200, 60),
+              ),
+              child: Text(
+                'Reset'.i18n,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            const Gap(16),
+          ],
         ),
         const Gap(16),
         FilledButton(

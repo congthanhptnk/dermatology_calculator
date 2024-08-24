@@ -27,7 +27,11 @@ class PatientInfoRadio extends StatelessWidget {
             String firstCharacter = selectedName.substring(0, 1);
             String newName = '${firstCharacter.toUpperCase()}${selectedName.substring(1)}';
             return RadioListTile<String>(
-              title: Text(newName.i18n),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+              title: Text(
+                newName.i18n,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               value: values[index],
               groupValue: name,
               onChanged: (String? value) {

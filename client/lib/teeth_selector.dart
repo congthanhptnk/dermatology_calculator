@@ -46,15 +46,17 @@ class TeethSelector extends StatelessWidget {
   }
 
   Widget _buildPartialSelector(BuildContext context) {
-    return ListView.builder(
-        itemCount: existingFeatures.length,
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          String feature = existingFeatures[index];
-          bool selected = selectedFeatures.contains(feature);
-          return ListTile(
+    return GridView.builder(
+      itemCount: existingFeatures.length,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        String feature = existingFeatures[index];
+        bool selected = selectedFeatures.contains(feature);
+        return Center(
+          child: ListTile(
             title: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Checkbox(
                   value: selected,
@@ -76,8 +78,11 @@ class TeethSelector extends StatelessWidget {
             onTap: () {
               toggleOption(feature, !selected);
             },
-          );
-        });
+          ),
+        );
+      },
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 758, mainAxisExtent: 60),
+    );
   }
 
   String getFeatureName(String feature) {

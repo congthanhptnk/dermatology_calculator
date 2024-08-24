@@ -105,9 +105,10 @@ class ResultPanel extends StatelessWidget {
           ),
           const Gap(24),
           ConstrainedBox(
-            constraints: const BoxConstraints(minWidth: 100),
-            child: SelectableText(
-              result.toString(),
+            constraints: const BoxConstraints(minWidth: 100, maxWidth: 300),
+            child: Text(
+              result.toStringAsPrecision(5),
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Colors.white),
               textAlign: TextAlign.center,
             ),

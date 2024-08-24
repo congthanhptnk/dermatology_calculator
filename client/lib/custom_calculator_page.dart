@@ -13,6 +13,7 @@ import 'package:dental_calculator/teeth_selector.dart';
 import 'package:dental_calculator/theme.dart';
 import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -80,18 +81,17 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                   children: [
                     const LanguageToggle(),
                     const Gap(32),
-                    FilledButton(
-                      style: const ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
+                    IconButton.outlined(
+                      color: Colors.white,
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.white),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text(
-                        'View Best Prediction'.i18n,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-                      ),
+                      icon: const Icon(FeatherIcons.book),
                     ),
+                    const Gap(16),
                   ],
                 ),
               ),
@@ -117,27 +117,30 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                     children: [
                       PanelGroup(
                         title: 'Select Gender and Arch'.i18n,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: SimplePanel(
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: 2,
+                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 492,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            mainAxisExtent: 176,
+                          ),
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return SimplePanel(
                                 title: 'Gender'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildGender(context),
-                              ),
-                            ),
-                            const Gap(24),
-                            Expanded(
-                              flex: 1,
-                              child: SimplePanel(
+                              );
+                            } else {
+                              return SimplePanel(
                                 title: 'Arch to predict'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildYName(context),
-                              ),
-                            ),
-                          ],
+                              );
+                            }
+                          },
                         ),
                       ),
                       const Gap(24),
