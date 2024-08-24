@@ -169,7 +169,7 @@ class _InputFieldState extends State<InputField> {
 
   InputDecoration getInputDecoration(BuildContext context) {
     return InputDecoration(
-      hintText: 'Enter'.i18n,
+      hintText: 'Eg: 10.00'.i18n,
       hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: GrayLightColor.s300),
       alignLabelWithHint: true,
       isDense: widget.isDense,

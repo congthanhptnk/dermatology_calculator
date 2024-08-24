@@ -28,14 +28,14 @@ class TeethInputsForm extends StatelessWidget {
         itemBuilder: (context, index) {
           String feature = features[index];
           return InputField(
-            label: feature,
+            label: getFeatureName(feature),
             validator: (String? value) {
               if (value?.isEmpty ?? true) {
                 return 'Required'.i18n;
               }
 
               if (double.tryParse(value!) == null) {
-                return 'Please fill in a valid value'.i18n;
+                return 'Please fill in a valid value. Eg: 10.0'.i18n;
               }
 
               return null;
@@ -51,5 +51,24 @@ class TeethInputsForm extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String getFeatureName(String feature) {
+    switch (feature) {
+      case 'R1T':
+        return 'Upper central incisor'.i18n;
+      case 'R2T':
+        return 'Upper lateral incisor'.i18n;
+      case 'R6T':
+        return 'Upper first molar'.i18n;
+      case 'R1D':
+        return 'Lower central incisor'.i18n;
+      case 'R2D':
+        return 'Lower lateral incisor'.i18n;
+      case 'R6D':
+        return 'Lower first molar'.i18n;
+      default:
+        return 'Some molar';
+    }
   }
 }

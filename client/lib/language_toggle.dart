@@ -12,7 +12,7 @@ class LanguageToggle extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'EN',
+          'English',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
         ),
         const Gap(8),
@@ -46,7 +46,7 @@ class LanguageToggle extends StatelessWidget {
         ),
         const Gap(8),
         Text(
-          'VI',
+          'Tiếng Việt',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
         )
       ],

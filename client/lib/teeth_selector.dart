@@ -34,7 +34,7 @@ class TeethSelector extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                'Please toggle on the values that you have. Require at least 2'.i18n,
+                'Require at least 2 teeth'.i18n,
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: GrayLightColor.s400),
               ),
@@ -46,40 +46,56 @@ class TeethSelector extends StatelessWidget {
   }
 
   Widget _buildPartialSelector(BuildContext context) {
-    return Wrap(
-      children: [
-        for (String feature in existingFeatures)
-          SizedBox(
-            width: 150,
-            child: Builder(builder: (context) {
-              bool selected = selectedFeatures.contains(feature);
-              return ListTile(
-                title: Row(
-                  children: [
-                    Checkbox(
-                      value: selected,
-                      onChanged: (bool? value) {
-                        if (value == null) {
-                          return;
-                        }
-                        toggleOption(feature, value);
-                      },
-                    ),
-                    const Gap(4),
-                    Text(
-                      feature,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ],
+    return ListView.builder(
+        itemCount: existingFeatures.length,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          String feature = existingFeatures[index];
+          bool selected = selectedFeatures.contains(feature);
+          return ListTile(
+            title: Row(
+              children: [
+                Checkbox(
+                  value: selected,
+                  onChanged: (bool? value) {
+                    if (value == null) {
+                      return;
+                    }
+                    toggleOption(feature, value);
+                  },
                 ),
-                selected: selected,
-                onTap: () {
-                  toggleOption(feature, !selected);
-                },
-              );
-            }),
-          ),
-      ],
-    );
+                const Gap(4),
+                Text(
+                  getFeatureName(feature),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ),
+            selected: selected,
+            onTap: () {
+              toggleOption(feature, !selected);
+            },
+          );
+        });
+  }
+
+  String getFeatureName(String feature) {
+    switch (feature) {
+      case 'R1T':
+        return 'Upper central incisor'.i18n;
+      case 'R2T':
+        return 'Upper lateral incisor'.i18n;
+      case 'R6T':
+        return 'Upper first molar'.i18n;
+      case 'R1D':
+        return 'Lower central incisor'.i18n;
+      case 'R2D':
+        return 'Lower lateral incisor'.i18n;
+      case 'R6D':
+        return 'Lower first molar'.i18n;
+      default:
+        return 'Some molar';
+    }
   }
 }

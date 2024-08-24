@@ -18,10 +18,10 @@ class Footer extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Developed and owned by Tran Ngoc Phuong Thao. All rights reserved'.i18n,
+            'Developed and owned by Thao Ngoc-Phuong Tran and Thanh Tran. All rights reserved.'.i18n,
           ),
           const Gap(4),
-          Text('For any inquiry, please contact Tran Ngoc Phuong Thao at'.i18n),
+          Text('For any inquiry, please contact Thao Ngoc-Phuong Tran at t4tran3.2@gmail.com'.i18n),
         ],
       ),
     );

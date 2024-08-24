@@ -4,7 +4,6 @@ import 'package:dental_calculator/custom_calculator_page.dart';
 import 'package:dental_calculator/error_panel.dart';
 import 'package:dental_calculator/footer.dart';
 import 'package:dental_calculator/language_toggle.dart';
-import 'package:dental_calculator/main.dart';
 import 'package:dental_calculator/panel_group.dart';
 import 'package:dental_calculator/patient_info_radio.dart';
 import 'package:dental_calculator/result_panel.dart';
@@ -76,7 +75,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
           preferredSize: const Size(double.infinity, 60),
           child: AppBar(
             title: Text(
-              'Dental Machine Learning Demo'.i18n,
+              'Teeth Width Prediction'.i18n,
               style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
             ),
             backgroundColor: BlueLightColor.s700,
@@ -95,12 +94,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
                       ),
                       onPressed: () {
+                        Locale x = I18n.of(context).locale;
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                          return const CustomCalculatorPage();
+                          return I18n(initialLocale: x, child: const CustomCalculatorPage());
                         }));
                       },
                       child: Text(
-                        'View custom calculator'.i18n,
+                        'View Alternative Prediction'.i18n,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                       ),
                     ),
@@ -128,7 +128,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       PanelGroup(
-                        title: 'Select gender and Y'.i18n,
+                        title: 'Select Gender and Arch'.i18n,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -144,7 +144,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                             Expanded(
                               flex: 1,
                               child: SimplePanel(
-                                title: 'Y Name'.i18n,
+                                title: 'Arch to predict'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildYName(context),
                               ),
@@ -166,7 +166,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                               "If you are unable to provide these, click 'I DON'T HAVE THESE MEASUREMENTS' button to evaluate based on other measurements"
                                   .i18n,
                           child: SimplePanel(
-                            title: 'Teeth Measurements'.i18n,
+                            title: 'Please provide mesiodistal width (mm) of these teeth'.i18n,
                             child: _buildTeethSelector(context),
                           ),
                         ),
@@ -206,12 +206,17 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 
   Widget _buildYName(BuildContext context) {
-    return PatientInfoRadio(values: const ['R345T', 'R345D'], listenable: yName);
+    return PatientInfoRadio(
+      values: const ['R345T', 'R345D'],
+      names: const ['Upper', 'Lower'],
+      listenable: yName,
+    );
   }
 
   Widget _buildGender(BuildContext context) {
     return PatientInfoRadio(
       values: const ['male', 'female'],
+      names: const ['Male', 'Female'],
       listenable: gender,
     );
   }
@@ -228,7 +233,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
               getFormula();
             },
       child: Text(
-        'Evaluate'.i18n,
+        'Start'.i18n,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
       ),
     );
@@ -261,7 +266,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   calculateFinalRes();
                 },
           child: Text(
-            'Calculate'.i18n,
+            'Predict'.i18n,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
         ),
@@ -286,8 +291,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
           onPressed: isLoading
               ? null
               : () async {
+                  Locale x = I18n.of(context).locale;
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                    return I18n(child: const CustomCalculatorPage());
+                    return I18n(initialLocale: x, child: const CustomCalculatorPage());
                   }));
                 },
           child: Text(
@@ -349,7 +355,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
         requiredFeatures = retFeatures;
       });
     } catch (err, stack) {
-      logger.e('HALLO', error: err, stackTrace: stack);
       error = '${err.toString()} $stack';
     } finally {
       setState(() {

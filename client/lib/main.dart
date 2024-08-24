@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         Locale('en', "US"),
         Locale('vi', "VN"),
       ],
-      home: I18n(initialLocale: const Locale('vi', "VN"), child: MyHomePage(title: 'Optimal Calculator'.i18n)),
+      home: I18n(initialLocale: const Locale('vi', "VN"), child: MyHomePage(title: 'View Best Prediction'.i18n)),
     );
   }
 }

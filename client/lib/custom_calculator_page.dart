@@ -65,29 +65,34 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
           preferredSize: const Size(double.infinity, 60),
           child: AppBar(
             title: Text(
-              'Fully Customized Dental Calculator'.i18n,
+              'Teeth Width Prediction'.i18n,
               style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
             ),
             backgroundColor: BlueLightColor.s700,
             scrolledUnderElevation: 2,
-            elevation: 2,
             leading: const SizedBox.shrink(),
+            elevation: 2,
             actions: [
-              const LanguageToggle(),
-              const Gap(32),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: FilledButton(
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'Optimal Calculator'.i18n,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const LanguageToggle(),
+                    const Gap(32),
+                    FilledButton(
+                      style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll<Color?>(BlueLightColor.s900),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'View Best Prediction'.i18n,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -111,7 +116,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       PanelGroup(
-                        title: 'Select gender and Y'.i18n,
+                        title: 'Select Gender and Arch'.i18n,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -127,7 +132,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                             Expanded(
                               flex: 1,
                               child: SimplePanel(
-                                title: 'Y Name'.i18n,
+                                title: 'Arch to predict'.i18n,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 child: _buildYName(context),
                               ),
@@ -137,7 +142,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                       ),
                       const Gap(24),
                       PanelGroup(
-                        title: 'Select teeth'.i18n,
+                        title: 'Select all teeth that you can measure'.i18n,
                         child: TeethSelector(
                           existingFeatures: existingFeatures,
                           expanded: true,
@@ -170,7 +175,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                               "You only need to provide these measurements. You can click reset button to try again"
                                   .i18n,
                           child: SimplePanel(
-                            title: 'Teeth Measurements'.i18n,
+                            title: 'Please provide mesiodistal width (mm) of these teeth'.i18n,
                             child: TeethInputsForm(
                               formKey: _formKey,
                               features: requiredFeatures!,
@@ -216,12 +221,17 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
   }
 
   Widget _buildYName(BuildContext context) {
-    return PatientInfoRadio(values: const ['R345T', 'R345D'], listenable: yName);
+    return PatientInfoRadio(
+      values: const ['R345T', 'R345D'],
+      names: const ['Male', 'Female'],
+      listenable: yName,
+    );
   }
 
   Widget _buildGender(BuildContext context) {
     return PatientInfoRadio(
       values: const ['male', 'female'],
+      names: const ['Upper', 'Lower'],
       listenable: gender,
     );
   }
@@ -238,7 +248,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
               getFormula();
             },
       child: Text(
-        'Evaluate'.i18n,
+        'Start'.i18n,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
       ),
     );
@@ -258,7 +268,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                   calculateFinalRes();
                 },
           child: Text(
-            'Calculate'.i18n,
+            'Predict'.i18n,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
         ),
