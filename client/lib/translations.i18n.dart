@@ -70,7 +70,7 @@ extension Localization on String {
       } +
       {
         'en_us': 'Upper first molar', // R6T
-        'vi_vn': 'Răng cối nhỏ thứ nhất hàm trên',
+        'vi_vn': 'Răng cối lớn thứ nhất hàm trên',
       } +
       {
         'en_us': 'Lower central incisor', // R1D
@@ -82,7 +82,7 @@ extension Localization on String {
       } +
       {
         'en_us': 'Lower first molar', // R6D
-        'vi_vn': 'Răng cối nhỏ thứ nhất hàm dưới',
+        'vi_vn': 'Răng cối lớn thứ nhất hàm dưới',
       } +
       {
         'en_us': 'Eg: 10.00',
@@ -135,6 +135,10 @@ extension Localization on String {
       {
         'en_us': 'You only need to provide these measurements. You can click reset button to try again',
         'vi_vn': 'Bạn chỉ cần cung cấp kích thước của các răng bên dưới. Hãy chọn nút Làm lại để bắt đầu lại',
+      } +
+      {
+        'en_us': 'Note: This is an ALTERNATIVE prediction result, may vary by about 1-2 mm from actual value',
+        'vi_vn': 'Lưu ý: Đây là kết quả dự đoán THAY THẾ, có thể sai lệch khoảng 1-2 mm so với thực tế',
       };
 
   static final Translations _translations = _wallet;

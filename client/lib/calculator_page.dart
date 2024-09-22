@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dental_calculator/custom_calculator_page.dart';
 import 'package:dental_calculator/error_panel.dart';
 import 'package:dental_calculator/footer.dart';
@@ -72,41 +73,85 @@ class _CalculatorPageState extends State<CalculatorPage> {
       style: Theme.of(context).textTheme.bodyLarge!,
       child: Scaffold(
         backgroundColor: Colors.white,
+        endDrawer: Drawer(
+          backgroundColor: BlueLightColor.s700,
+          child: ListView(
+            children: [
+              const Gap(32),
+              const ListTile(title: LanguageToggle()),
+              const Gap(32),
+              Builder(builder: (context) {
+                return ListTile(
+                  title: IconButton.outlined(
+                    color: Colors.white,
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      Scaffold.of(context).closeEndDrawer();
+                      Locale x = I18n.of(context).locale;
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                        return I18n(initialLocale: x, child: const CustomCalculatorPage());
+                      }));
+                    },
+                    icon: const Icon(FeatherIcons.bookOpen),
+                  ),
+                );
+              }),
+              const Gap(16),
+            ],
+          ),
+        ),
         appBar: PreferredSize(
           preferredSize: const Size(double.infinity, 60),
           child: AppBar(
-            title: Text(
-              'Teeth Width Prediction'.i18n,
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
+            title: Padding(
+              padding: const EdgeInsets.only(right: 32),
+              child: AutoSizeText(
+                'Teeth Width Prediction'.i18n,
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
+                minFontSize: 16,
+                maxLines: 1,
+              ),
             ),
             backgroundColor: BlueLightColor.s700,
             scrolledUnderElevation: 2,
             elevation: 2,
             actions: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const LanguageToggle(),
-                    const Gap(32),
-                    IconButton.outlined(
-                      color: Colors.white,
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.white),
+              if (MediaQuery.of(context).size.width > 500)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const LanguageToggle(),
+                      const Gap(32),
+                      IconButton.outlined(
+                        color: Colors.white,
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Locale x = I18n.of(context).locale;
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                            return I18n(initialLocale: x, child: const CustomCalculatorPage());
+                          }));
+                        },
+                        icon: const Icon(FeatherIcons.bookOpen),
                       ),
-                      onPressed: () {
-                        Locale x = I18n.of(context).locale;
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                          return I18n(initialLocale: x, child: const CustomCalculatorPage());
-                        }));
-                      },
-                      icon: const Icon(FeatherIcons.bookOpen),
-                    ),
-                    const Gap(16),
-                  ],
-                ),
-              ),
+                      const Gap(16),
+                    ],
+                  ),
+                )
+              else
+                Builder(builder: (context) {
+                  return DrawerButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                  );
+                })
             ],
           ),
         ),
@@ -260,7 +305,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        Wrap(
+          runSpacing: 16,
           children: [
             FilledButton(
               style: const ButtonStyle(
@@ -277,7 +323,6 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
               ),
             ),
-            const Gap(16),
             OutlinedButton(
               onPressed: widget.onReset,
               style: OutlinedButton.styleFrom(

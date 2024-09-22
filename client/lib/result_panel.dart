@@ -32,11 +32,18 @@ class ResultPanel extends StatelessWidget {
                   'Result'.i18n,
                   style: Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.white),
                 ),
-                const Gap(16),
+                // const Gap(16),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 24),
+                //   child: SelectableText(
+                //     'Formula'.i18n + ': $formula',
+                //     style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: SelectableText(
-                    'Formula'.i18n + ': $formula',
+                    'Note: This is an ALTERNATIVE prediction result, may vary by about 1-2 mm from actual value'.i18n,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                   ),
                 ),
@@ -107,7 +114,7 @@ class ResultPanel extends StatelessWidget {
           ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 100, maxWidth: 300),
             child: Text(
-              result.toStringAsPrecision(5),
+              result.toStringAsFixed(2),
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Colors.white),
               textAlign: TextAlign.center,

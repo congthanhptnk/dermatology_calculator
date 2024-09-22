@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dental_calculator/simple_panel.dart';
 import 'package:dental_calculator/theme.dart';
 import 'package:dental_calculator/translations.i18n.dart';
@@ -25,7 +26,7 @@ class TeethSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimplePanel(
-      title: 'Teeth',
+      title: '',
       child: Column(
         children: [
           _buildPartialSelector(context),
@@ -46,6 +47,7 @@ class TeethSelector extends StatelessWidget {
   }
 
   Widget _buildPartialSelector(BuildContext context) {
+    var myGroup = AutoSizeGroup();
     return GridView.builder(
       itemCount: existingFeatures.length,
       physics: const NeverScrollableScrollPhysics(),
@@ -53,32 +55,36 @@ class TeethSelector extends StatelessWidget {
       itemBuilder: (context, index) {
         String feature = existingFeatures[index];
         bool selected = selectedFeatures.contains(feature);
-        return Center(
-          child: ListTile(
-            title: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Checkbox(
-                  value: selected,
-                  onChanged: (bool? value) {
-                    if (value == null) {
-                      return;
-                    }
-                    toggleOption(feature, value);
-                  },
-                ),
-                const Gap(4),
-                Text(
+        return ListTile(
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Checkbox(
+                value: selected,
+                onChanged: (bool? value) {
+                  if (value == null) {
+                    return;
+                  }
+                  toggleOption(feature, value);
+                },
+              ),
+              const Gap(4),
+              Expanded(
+                child: AutoSizeText(
                   getFeatureName(feature),
                   style: Theme.of(context).textTheme.titleLarge,
+                  group: myGroup,
+                  minFontSize: 12,
+                  maxLines: 1,
                 ),
-              ],
-            ),
-            selected: selected,
-            onTap: () {
-              toggleOption(feature, !selected);
-            },
+              ),
+            ],
           ),
+          selected: selected,
+          onTap: () {
+            toggleOption(feature, !selected);
+          },
         );
       },
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 758, mainAxisExtent: 60),
