@@ -177,6 +177,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         child: GridView.builder(
                           shrinkWrap: true,
                           itemCount: 2,
+                          physics: const NeverScrollableScrollPhysics(),
                           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                             maxCrossAxisExtent: 492,
                             crossAxisSpacing: 16,
@@ -237,6 +238,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         ResultPanel(
                           formula: formula!,
                           result: finalRes,
+                          showDisclaimer: false,
                         )
                       ],
                       const Gap(32),
@@ -307,6 +309,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
       children: [
         Wrap(
           runSpacing: 16,
+          spacing: 16,
+          alignment: WrapAlignment.start,
           children: [
             FilledButton(
               style: const ButtonStyle(

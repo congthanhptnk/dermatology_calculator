@@ -162,6 +162,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                         child: GridView.builder(
                           shrinkWrap: true,
                           itemCount: 2,
+                          physics: const NeverScrollableScrollPhysics(),
                           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                             maxCrossAxisExtent: 492,
                             crossAxisSpacing: 16,
@@ -249,6 +250,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                         ResultPanel(
                           formula: formula!,
                           result: finalRes,
+                          showDisclaimer: true,
                         )
                       ],
                       const Gap(32),
@@ -302,6 +304,8 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
   Widget _buildButtons(BuildContext context) {
     return Wrap(
       runSpacing: 16,
+      spacing: 16,
+      alignment: WrapAlignment.start,
       children: [
         FilledButton(
           style: const ButtonStyle(

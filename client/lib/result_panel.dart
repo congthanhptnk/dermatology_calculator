@@ -8,7 +8,9 @@ class ResultPanel extends StatelessWidget {
   final String formula;
   final double result;
 
-  const ResultPanel({super.key, required this.formula, required this.result});
+  final bool showDisclaimer;
+
+  const ResultPanel({super.key, required this.formula, required this.result, required this.showDisclaimer});
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +42,14 @@ class ResultPanel extends StatelessWidget {
                 //     style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                 //   ),
                 // ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: SelectableText(
-                    'Note: This is an ALTERNATIVE prediction result, may vary by about 1-2 mm from actual value'.i18n,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                if (showDisclaimer)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: SelectableText(
+                      'Note: This is an ALTERNATIVE prediction result, may vary by about 1-2 mm from actual value'.i18n,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                    ),
                   ),
-                ),
               ],
             ),
             const Gap(32),
