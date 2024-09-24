@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split, RepeatedKFold
 from sklearn.feature_selection import RFE
 from sklearn.preprocessing import RobustScaler
-from sklearn.metrics import r2_score, root_mean_squared_error
+from sklearn.metrics import r2_score, root_mean_squared_error, mean_absolute_error
 from pathlib import Path
 
 # Load the dataset
@@ -78,13 +78,14 @@ def evaluate_model_with_kfold(X, y, random_state):
             best_formula_unscaled = f"{unscaled_intercept} + " + " + ".join([f"{coef}*{feature}" for coef, feature in zip(unscaled_coefs, selected_features)])
    
     
-    average_r2 = np.mean(all_r2_scores)
-    std_r2 = np.std(all_r2_scores)
-    average_rmse = np.mean(all_rmse_scores)
+    # average_r2 = np.mean(all_r2_scores)
+    # std_r2 = np.std(all_r2_scores)
+    # average_rmse = np.mean(all_rmse_scores)
     
     y_test_pred = model.predict(X_test_scaled[:, selected_indices])
-    rmse_test = root_mean_squared_error(y_test, y_test_pred)
-    r2_test = r2_score(y_test, y_test_pred)
+    # rmse_test = root_mean_squared_error(y_test, y_test_pred)
+    mae_test = mean_absolute_error(y_test, y_test_pred)
+    # r2_test = r2_score(y_test, y_test_pred)
 
 # # Tanaka-Johnston test set
 #     tanaka_constant = None
@@ -101,14 +102,14 @@ def evaluate_model_with_kfold(X, y, random_state):
     print(f'-----------{y_train.name}------------')
     print("Best Scaled Formula:", best_formula_scaled)
     print("Best Unscaled Formula:", best_formula_unscaled)
-    print(f"Average R² (Cross-Validation): {average_r2:.4f} ± {std_r2:.4f}")
-    print("Average RMSE (Cross-Validation):", average_rmse)
-    print("R² Score (Test Set):", r2_test)
-    print("RMSE Score (Test Set):", rmse_test)
+    # print(f"Average R² (Cross-Validation): {average_r2:.4f} ± {std_r2:.4f}")
+    # print("Average RMSE (Cross-Validation):", average_rmse)
+    # print("R² Score (Test Set):", r2_test)
+    # print("RMSE Score (Test Set):", rmse_test)
     # print("Tanaka-Johnson R² Score (Test Set):", tanaka_r2)
     # print("Tanaka-Johnson RMSE Score (Test Set):", tanaka_rmse)
     print(" ")
-    return best_formula_unscaled, best_formula_features
+    return best_formula_unscaled, best_formula_features, mae_test
 
 # Apply function for each target
 # ['R1T', 'R1D', 'R2T', 'R2D', 'R6T', 'R6D']
@@ -125,7 +126,7 @@ def hoho(gender, provided_features, y_name ):
     y_data =data['R345T']
     if y_name == 'R345D':
         y_data = data['R345D']
-    best_formula, best_formula_features = evaluate_model_with_kfold(X, y_data, random_state)
-    return best_formula, best_formula_features
+    best_formula, best_formula_features, mae_test = evaluate_model_with_kfold(X, y_data, random_state)
+    return best_formula, best_formula_features, mae_test
 # evaluate_model_with_kfold(X, y_R345T, random_state)
 # evaluate_model_with_kfold(X, y_R345D, random_state)

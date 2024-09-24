@@ -33,8 +33,8 @@ def ml():
   if features is None:
      return jsonify(content={'error': 'Missing features'}), 401
   
-  best_formula, best_formula_features = ml_model_0607.hoho(gender=gender, provided_features=features, y_name=y_name)
-  return jsonify(content={'formula': best_formula, 'features': best_formula_features}, status=200, mimetype='application/json'), 200
+  best_formula, best_formula_features, mae_test = ml_model_0607.hoho(gender=gender, provided_features=features, y_name=y_name)
+  return jsonify(content={'formula': best_formula, 'features': best_formula_features, 'mae': mae_test}, status=200, mimetype='application/json'), 200
 
 # @app.route('/user', methods = ['GET'])
 # def ml():
