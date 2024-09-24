@@ -7,10 +7,17 @@ import 'package:gap/gap.dart';
 class ResultPanel extends StatelessWidget {
   final String formula;
   final double result;
+  final double? mae;
 
   final bool showDisclaimer;
 
-  const ResultPanel({super.key, required this.formula, required this.result, required this.showDisclaimer});
+  const ResultPanel({
+    super.key,
+    required this.formula,
+    required this.result,
+    required this.showDisclaimer,
+    this.mae,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +49,13 @@ class ResultPanel extends StatelessWidget {
                 //     style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                 //   ),
                 // ),
-                if (showDisclaimer)
+                if (showDisclaimer && mae != null)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: SelectableText(
-                      'Note: This is an ALTERNATIVE prediction result, may vary by about 1-2 mm from actual value'.i18n,
+                      'Note: This is an ALTERNATIVE prediction result, may vary by about %s mm from actual value'
+                          .i18n
+                          .fill([mae!.toStringAsFixed(2)]),
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                     ),
                   ),

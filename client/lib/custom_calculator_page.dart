@@ -42,6 +42,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
 
   String? formula;
   double finalRes = 0;
+  double? mae;
 
   final ValueNotifier<String> gender = ValueNotifier('male');
   final ValueNotifier<String> yName = ValueNotifier('R345T');
@@ -54,6 +55,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
       error = null;
       formula = null;
       finalRes = 0;
+      mae = null;
     });
   }
 
@@ -250,6 +252,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                         ResultPanel(
                           formula: formula!,
                           result: finalRes,
+                          mae: mae,
                           showDisclaimer: true,
                         )
                       ],
@@ -379,12 +382,14 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
 
       dynamic decodedData = jsonDecode(data.body)['content'];
       String? retFormula = decodedData['formula'];
+      double? mae = decodedData['mae'];
       List<String>? retFeatures =
           List.generate(decodedData['features'].length, (index) => decodedData['features'][index].toString());
 
       setState(() {
         formula = retFormula;
         requiredFeatures = retFeatures;
+        this.mae = mae;
       });
     } catch (err, stack) {
       logger.e('HALLO', error: err, stackTrace: stack);

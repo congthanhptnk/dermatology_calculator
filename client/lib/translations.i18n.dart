@@ -137,8 +137,8 @@ extension Localization on String {
         'vi_vn': 'Bạn chỉ cần cung cấp kích thước của các răng bên dưới. Hãy chọn nút Làm lại để bắt đầu lại',
       } +
       {
-        'en_us': 'Note: This is an ALTERNATIVE prediction result, may vary by about 1-2 mm from actual value',
-        'vi_vn': 'Lưu ý: Đây là kết quả dự đoán THAY THẾ, có thể sai lệch khoảng 1-2 mm so với thực tế',
+        'en_us': 'Note: This is an ALTERNATIVE prediction result, may vary by about %s mm from actual value',
+        'vi_vn': 'Lưu ý: Đây là kết quả dự đoán THAY THẾ, có thể sai lệch khoảng %s mm so với thực tế',
       };
 
   static final Translations _translations = _wallet;
