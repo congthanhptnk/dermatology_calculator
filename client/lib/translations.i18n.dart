@@ -113,8 +113,8 @@ extension Localization on String {
         'vi_vn': 'Xây dựng và sở hữu bởi Trần Ngọc Phương Thảo và Thanh Tran. Vui lòng không sao chép.',
       } +
       {
-        'en_us': 'For any inquiry, please contact Thao Ngoc-Phuong Tran at t4tran3.2@gmail.com',
-        'vi_vn': 'Mọi chi tiết vui lòng liên hệ Trần Ngọc Phương Thảo qua t4tran3.2@gmail.com',
+        'en_us': 'For any inquiry, please contact Thao Ngoc-Phuong Tran at tranngocphuongthao@gmail.com',
+        'vi_vn': 'Mọi chi tiết vui lòng liên hệ Trần Ngọc Phương Thảo qua tranngocphuongthao@gmail.com',
       } +
       {
         'en_us': 'View Best Prediction',

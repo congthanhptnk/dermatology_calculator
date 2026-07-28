@@ -35,7 +35,7 @@ class Footer extends StatelessWidget {
       children: [
         Text('Developed and owned by Thao Ngoc-Phuong Tran and Thanh Tran. All rights reserved.'.i18n),
         const Gap(4),
-        Text('For any inquiry, please contact Thao Ngoc-Phuong Tran at t4tran3.2@gmail.com'.i18n),
+        Text('For any inquiry, please contact Thao Ngoc-Phuong Tran at tranngocphuongthao@gmail.com'.i18n),
       ],
     );
   }
@@ -56,7 +56,7 @@ class Footer extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const Gap(4),
-        Text('For any inquiry, please contact Thao Ngoc-Phuong Tran at t4tran3.2@gmail.com'.i18n),
+        Text('For any inquiry, please contact Thao Ngoc-Phuong Tran at tranngocphuongthao@gmail.com'.i18n),
       ],
     );
   }
@@ -112,7 +112,7 @@ class BiggerFooter extends StatelessWidget {
                     ),
                     const Gap(16),
                     Text(
-                      '© 2024 Thao Ngoc-Phuong Tran & Thanh Tran Cong. All rights reserved.',
+                      '© 2026 Thao Ngoc-Phuong Tran & Thanh Tran Cong. All rights reserved.',
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 14,
@@ -162,7 +162,7 @@ class BiggerFooter extends StatelessWidget {
         ),
       ),
       Text(
-        't4tran3.2@gmail.com'.i18n,
+        'tranngocphuongthao@gmail.com'.i18n,
         style: TextStyle(
           color: Colors.grey[600],
           fontSize: 14,
