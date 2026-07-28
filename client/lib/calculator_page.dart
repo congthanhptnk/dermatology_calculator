@@ -155,9 +155,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
             ],
           ),
         ),
-        bottomNavigationBar: const Footer(),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
+          padding: const EdgeInsets.only(top: 32),
           child: Scrollbar(
             controller: scrollController,
             thumbVisibility: true,
@@ -166,86 +165,93 @@ class _CalculatorPageState extends State<CalculatorPage> {
             child: SingleChildScrollView(
               controller: scrollController,
               child: Center(
-                child: Container(
-                  constraints: const BoxConstraints(maxWidth: 1000),
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      PanelGroup(
-                        title: 'Select Gender and Arch'.i18n,
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          itemCount: 2,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 492,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                            mainAxisExtent: 176,
-                          ),
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return SimplePanel(
-                                title: 'Gender'.i18n,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                child: _buildGender(context),
-                              );
-                            } else {
-                              return SimplePanel(
-                                title: 'Arch to predict'.i18n,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                child: _buildYName(context),
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                      const Gap(24),
-                      if (requiredFeatures?.isEmpty ?? true)
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: _buildEvaluateBestFeaturesButton(),
-                        ),
-                      const Gap(24),
-                      if (requiredFeatures?.isNotEmpty ?? false)
-                        PanelGroup(
-                          title: 'Below measurements are required for the best predictions'.i18n,
-                          description:
-                              "If you are unable to provide these, click 'I DON'T HAVE THESE MEASUREMENTS' button to evaluate based on other measurements"
-                                  .i18n,
-                          child: SimplePanel(
-                            title: 'Please provide mesiodistal width (mm) of these teeth'.i18n,
-                            child: _buildTeethSelector(context),
-                          ),
-                        ),
-                      const Gap(24),
-                      if (isLoading)
-                        Center(
-                          child: SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: LoadingAnimationWidget.twistingDots(
-                              rightDotColor: SuccessColor.s300,
-                              leftDotColor: BlueLightColor.s300,
-                              size: 100,
+                child: Column(
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 1000, minHeight: MediaQuery.of(context).size.height - 200),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          PanelGroup(
+                            title: 'Select Gender and Arch'.i18n,
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              itemCount: 2,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 492,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                                mainAxisExtent: 176,
+                              ),
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return SimplePanel(
+                                    title: 'Gender'.i18n,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    child: _buildGender(context),
+                                  );
+                                } else {
+                                  return SimplePanel(
+                                    title: 'Arch to predict'.i18n,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    child: _buildYName(context),
+                                  );
+                                }
+                              },
                             ),
                           ),
-                        )
-                      else if (error?.isNotEmpty ?? false)
-                        ErrorPanel(error: error!)
-                      else if (finalRes != 0 && formula != null) ...[
-                        ResultPanel(
-                          formula: formula!,
-                          result: finalRes,
-                          showDisclaimer: false,
-                        )
-                      ],
-                      const Gap(32),
-                      if (requiredFeatures?.isNotEmpty ?? false) _buildButtons(context),
-                      const Gap(16),
-                    ],
-                  ),
+                          const Gap(24),
+                          if (requiredFeatures?.isEmpty ?? true)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: _buildEvaluateBestFeaturesButton(),
+                            ),
+                          const Gap(24),
+                          if (requiredFeatures?.isNotEmpty ?? false)
+                            PanelGroup(
+                              title: 'Below measurements are required for the best predictions'.i18n,
+                              description:
+                                  "If you are unable to provide these, click 'I DON'T HAVE THESE MEASUREMENTS' button to evaluate based on other measurements"
+                                      .i18n,
+                              child: SimplePanel(
+                                title: 'Please provide mesiodistal width (mm) of these teeth'.i18n,
+                                child: _buildTeethSelector(context),
+                              ),
+                            ),
+                          const Gap(24),
+                          if (isLoading)
+                            Center(
+                              child: SizedBox(
+                                height: 100,
+                                width: 100,
+                                child: LoadingAnimationWidget.twistingDots(
+                                  rightDotColor: SuccessColor.s300,
+                                  leftDotColor: BlueLightColor.s300,
+                                  size: 100,
+                                ),
+                              ),
+                            )
+                          else if (error?.isNotEmpty ?? false)
+                            ErrorPanel(error: error!)
+                          else if (finalRes != 0 && formula != null) ...[
+                            ResultPanel(
+                              formula: formula!,
+                              result: finalRes,
+                              showDisclaimer: false,
+                            )
+                          ],
+                          const Gap(32),
+                          if (requiredFeatures?.isNotEmpty ?? false) _buildButtons(context),
+                          const Gap(16),
+                        ],
+                      ),
+                    ),
+                    const Gap(32),
+                    const BiggerFooter(),
+                  ],
                 ),
               ),
             ),
