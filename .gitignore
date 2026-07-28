@@ -1,0 +1,44 @@
+# Repo-root ignores, applying to both client/ and backend/.
+# Per-project rules live in client/.gitignore and backend/.gitignore.
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Python virtualenvs — matched by shape, not by exact name, so any
+# *-env / env-* / .venv layout is covered wherever it is created.
+*env/
+*-env/
+env/
+.venv/
+venv/
+# A directory containing pyvenv.cfg is a venv; keep new ones out too.
+pyvenv.cfg
+
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Test / coverage
+.coverage*
+htmlcov/
+.tox/
+
+# Build output
+dist/
+build/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+service-account*.json
