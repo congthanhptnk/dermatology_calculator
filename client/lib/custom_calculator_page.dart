@@ -14,7 +14,6 @@ import 'package:dental_calculator/teeth_selector.dart';
 import 'package:dental_calculator/theme.dart';
 import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -83,7 +82,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                       Scaffold.of(context).closeEndDrawer();
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(FeatherIcons.book),
+                    icon: const Icon(Icons.book_outlined),
                   ),
                 );
               }),
@@ -124,7 +123,7 @@ class _CustomCalculatorPageState extends State<CustomCalculatorPage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        icon: const Icon(FeatherIcons.book),
+                        icon: const Icon(Icons.book_outlined),
                       ),
                       const Gap(16),
                     ],

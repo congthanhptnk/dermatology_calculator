@@ -22,7 +22,7 @@ class LanguageToggle extends StatelessWidget {
             fit: BoxFit.fitHeight,
             child: Switch(
               // This bool value toggles the switch.
-              value: I18n.localeStr == 'vi_vn',
+              value: I18n.languageTag == 'vi-VN',
               trackColor: trackColor,
               thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
                 (Set<WidgetState> states) {

@@ -5,7 +5,10 @@
 .DS_Store
 Thumbs.db
 .idea/
-.vscode/
+# Anchored to the repo root: an unanchored ".vscode/" would exclude
+# client/.vscode as a directory, and git cannot re-include anything inside an
+# excluded directory -- which would defeat client/.gitignore's negations.
+/.vscode/
 *.swp
 
 # Python virtualenvs — matched by shape, not by exact name, so any

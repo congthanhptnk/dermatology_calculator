@@ -13,7 +13,6 @@ import 'package:dental_calculator/teeth_inputs_form.dart';
 import 'package:dental_calculator/theme.dart';
 import 'package:dental_calculator/translations.i18n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:i18n_extension/i18n_extension.dart';
@@ -94,7 +93,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         return I18n(initialLocale: x, child: const CustomCalculatorPage());
                       }));
                     },
-                    icon: const Icon(FeatherIcons.bookOpen),
+                    icon: const Icon(Icons.menu_book_outlined),
                   ),
                 );
               }),
@@ -137,7 +136,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
                             return I18n(initialLocale: x, child: const CustomCalculatorPage());
                           }));
                         },
-                        icon: const Icon(FeatherIcons.bookOpen),
+                        icon: const Icon(Icons.menu_book_outlined),
                       ),
                       const Gap(16),
                     ],

@@ -70,8 +70,12 @@ firebase_options.dart
 .classpath
 .project
 .settings/
-.vscode/
+# Ignore .vscode contents rather than the directory itself: git does not
+# descend into an excluded directory, so negations below would never apply.
+.vscode/*
 !.vscode/launch.json
+# Pins the Flutter SDK for this project; must be shared, not ignored.
+!.vscode/settings.json
 
 # Flutter repo-specific
 /bin/cache/
@@ -178,3 +182,6 @@ package-lock.json
 error.log
 android_error.log
 firebase_error.log
+
+# FVM Version Cache
+.fvm/
